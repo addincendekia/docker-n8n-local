@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - E:/docker/shared/pgdata:/var/lib/postgresql/data
+    networks:
+      - net-local.n8n
+
+  n8n:
+  "n8n":
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5678:5678"
+    environment:
+      - NODE_FUNCTION_ALLOW_EXTERNAL=xlsx
+    volumes:
+      - E:/docker/n8n_data:/home/node/.n8n
+      - E:/docker/shared:/home/shared
+    networks:
+      - net-local.n8n
+
+networks:
+  "net-local.n8n":
+    name: net-local.n8n
+    driver: bridge
