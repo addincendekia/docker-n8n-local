@@ -8,12 +8,11 @@ services:
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
-      - E:/docker/shared/pgdata:/var/lib/postgresql/data
+      - ${VOLUME_PGDATA}:/var/lib/postgresql/data
     networks:
       - net-local.n8n
 
   n8n:
-  "n8n":
     build:
       context: .
       dockerfile: Dockerfile
@@ -22,12 +21,12 @@ services:
     environment:
       - NODE_FUNCTION_ALLOW_EXTERNAL=xlsx
     volumes:
-      - E:/docker/n8n_data:/home/node/.n8n
-      - E:/docker/shared:/home/shared
+      - ${VOLUME_N8NDATA}:/home/node/.n8n
+      - ${VOLUME_SHARED}:/home/shared
     networks:
       - net-local.n8n
 
 networks:
-  "net-local.n8n":
+  net-local.n8n:
     name: net-local.n8n
     driver: bridge
